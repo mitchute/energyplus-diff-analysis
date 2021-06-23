@@ -1,4 +1,6 @@
+import os
 import sys
+from pathlib import Path
 from textwrap import wrap
 from typing import Union
 
@@ -40,6 +42,13 @@ def plot(base_path: str,
     else:
         max_idx = high_row_num - 1
 
+    # setup plots folder
+    parent_dir = Path(__file__).parent.parent
+    plot_dir_path = parent_dir / "plots"
+
+    if not plot_dir_path.exists():
+        os.mkdir(plot_dir_path)
+
     # make plots
     for idx, c in enumerate(cols):
         print(c)
@@ -57,7 +66,8 @@ def plot(base_path: str,
         ax2.grid()
         plt.suptitle("\n".join(wrap(c)))
         fig_name = c.replace(" ", "_").replace("/", "-")
-        plt.savefig(f"{fig_name}.png", bbox_inches='tight')
+        fig_path = plot_dir_path / f"{fig_name}.png"
+        plt.savefig(fig_path, bbox_inches='tight')
 
 
 if __name__ == "__main__":
