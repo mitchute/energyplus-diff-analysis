@@ -69,7 +69,7 @@ def plot(base_path: str,
 
     # set high plot range based on row number
     if high_row_num is None:
-        max_idx = len(df_base.index)
+        max_idx = df_base.shape[0]
     else:
         max_idx = high_row_num - 1
 
@@ -86,11 +86,11 @@ def plot(base_path: str,
     # make plots
     for idx, c in enumerate(cols):
         try:
-            base = df_base[c].iloc[min_idx:max_idx + 1].values
-            mod = df_mod[c].iloc[min_idx: max_idx + 1].values
+            base = df_base[c].iloc[min_idx:max_idx].values
+            mod = df_mod[c].iloc[min_idx: max_idx].values
             diff = base - mod
             fig, (ax1, ax2) = plt.subplots(2, sharex=True)
-            x = [*range(min_idx + 1, max_idx + 2, 1)]
+            x = [*range(min_idx + 1, max_idx + 1, 1)]
             ax1.plot(x, base, label='baseline')
             ax1.plot(x, mod, label='modified', linestyle='--')
             ax1.legend()
