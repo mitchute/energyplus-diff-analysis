@@ -34,3 +34,8 @@ The ```cols``` field also accepts a list input for when you want to plot more th
 You may also specify the range of rows you want to plot.
 
 ```plot(baseline_path, mod_path, cols="Col Name 1", low_row_num=10, high_row_num=20)```
+
+### Example 5 - Specify the output directory for the plots
+If you want to be cheeky, can also specify the output directory.
+
+```plot(baseline_path, mod_path, plot_dir="/path/to/output_dir")```
