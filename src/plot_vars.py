@@ -18,7 +18,21 @@ def plot(base_path: str,
          cols: Union[str, list] = None,
          low_row_num: int = None,
          high_row_num: int = None,
-         plot_dir: str = None):
+         plot_dir: str = None,
+         plot_only_diffs: bool = False):
+    """
+    Plots csv diffs
+
+    :param base_path: string path to baseline file
+    :param mod_path: string path to modified file
+    :param cols: optional. string column name, or list of string column names to plot
+    :param low_row_num: optional. lowest row number to be plotted, excluding header row
+    :param high_row_num: optional. highest row number to be plotted, excluding header row
+    :param plot_dir: optional. string path to directory for plots to be saved
+    :param plot_only_diffs: optional, default FALSE. only plots columns with differences
+    :return:
+    """
+
     # proper path objects
     base_path = Path(base_path)
     mod_path = Path(mod_path)
@@ -96,12 +110,17 @@ def plot(base_path: str,
     # make plots
     for idx, c in enumerate(cols):
         try:
-            print(f"Plotting: {c}")
             # process the column to be plotted
             x = [*range(min_idx + 1, max_idx + 1, 1)]
             base = df_base[c].iloc[min_idx:max_idx].values
             mod = df_mod[c].iloc[min_idx: max_idx].values
             diff = base - mod
+
+            if not all([abs(x) > 0 for x in diff]) and plot_only_diffs:
+                print(f"Skipping: {c} - no diffs")
+                continue
+            else:
+                print(f"Plotting: {c}")
 
             # create the figure and plot the series
             fig, ax1 = plt.subplots(1)
