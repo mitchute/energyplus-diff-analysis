@@ -65,4 +65,4 @@ To plot only the files with diffs, you can add the `plot_only_diffs` kwarg and s
 
 Once you're all done, you can zip your plots for easier downloading.
 
-```zip_plots(dir_to_zip="plots")```
+```make_archive(source="plots", destination="plots.zip")```
