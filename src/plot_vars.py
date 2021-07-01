@@ -147,7 +147,7 @@ def plot(base_path: str,
             # final housekeeping
             ax2.set_ylabel("Delta (baseline - modified)")
             plt.suptitle("\n".join(wrap(c)))
-            fig_name = c.replace(" ", "_").replace("/", "-")
+            fig_name = c.replace(" ", "_").replace("/", "-").replace(":", "_")
             fig_path = plot_dir_path / f"{fig_name}.png"
             plt.savefig(fig_path, bbox_inches="tight")
         except:
