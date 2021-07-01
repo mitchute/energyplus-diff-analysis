@@ -1,16 +1,18 @@
-import os
 import shutil
 import sys
+from pathlib import Path
 
 
 def make_archive(source, destination):
     """https://stackoverflow.com/a/50381223"""
 
-    base = os.path.basename(destination)
-    name = base.split('.')[0]
-    archive_format = base.split('.')[1]
-    archive_from = os.path.dirname(source)
-    archive_to = os.path.basename(source.strip(os.sep))
+    source = Path(source)
+    destination = Path(destination)
+    base = destination.name
+    name = destination.stem
+    archive_format = base.split(".")[1]
+    archive_from = str(source.parent)  # /Users/.../PlotVars
+    archive_to = name  # plots
     shutil.make_archive(name, archive_format, archive_from, archive_to)
     shutil.move('%s.%s' % (name, archive_format), destination)
 
