@@ -104,37 +104,49 @@ def plot(base_path: str,
     if not plot_dir_path.exists():
         os.mkdir(plot_dir_path)
 
-    # upper limit of 30 markers for the plot
-    marker_interval = max(ceil(df_base.shape[0] / 30), 1)
-
     # make plots
     for idx, c in enumerate(cols):
         try:
             # process the column to be plotted
-            x = [*range(min_idx + 1, max_idx + 1, 1)]
-            base = df_base[c].iloc[min_idx:max_idx].values
-            mod = df_mod[c].iloc[min_idx: max_idx].values
+            idx = [*range(min_idx + 1, max_idx + 1, 1)]
+            base = df_base[c].iloc[min_idx:max_idx]
+            base = base.reindex(idx)
+            base = base.dropna()
+            mod = df_mod[c].iloc[min_idx: max_idx]
+            mod = mod.reindex(idx)
+            mod = mod.dropna()
             diff = base - mod
 
             if not all([abs(x) > 0 for x in diff]) and plot_only_diffs:
                 print(f"Skipping: {c} - no diffs")
                 continue
+            elif all(x == 0 for x in [base.shape[0], mod.shape[0], diff.shape[0]]):
+                print(f"Skipping: {c} - no data to plot")
+                continue
             else:
                 print(f"Plotting: {c}")
 
+            # upper limit of 30 markers for the plot
+            marker_interval = max(ceil(base.shape[0] / 30), 1)
+
             # create the figure and plot the series
             fig, ax1 = plt.subplots(1)
-            ax2 = ax1.twinx()
-            ln1 = ax1.plot(x, base, marker="s", markevery=marker_interval)[0]
-            ln2 = ax1.plot(x, mod, marker="^", linestyle="--", markevery=marker_interval)[0]
-            ln3 = ax2.plot(x, diff, marker=".", linestyle="-.", c="r", markevery=marker_interval)[0]
+            lines = []
+            if base.shape[0] > 0:
+                lines.append(ax1.plot(base, marker="s", markevery=marker_interval)[0])
+            if mod.shape[0] > 0:
+                lines.append(ax1.plot(mod, marker="^", linestyle="--", markevery=marker_interval)[0])
+
+            if diff.shape[0] > 0:
+                ax2 = ax1.twinx()
+                lines.append(ax2.plot(diff, marker=".", linestyle="-.", c="r", markevery=marker_interval)[0])
 
             # primary x/y axis grid lines
             ax1.grid()
 
             # make a legend that contains all series
             line_labels = ["baseline", "modified", "delta"]
-            fig.legend([ln1, ln2, ln3], line_labels, loc="lower right", ncol=3)
+            fig.legend(lines, line_labels, loc="lower right", ncol=3)
 
             # add a note for when we're not adding markers to all data points
             if marker_interval > 1:
