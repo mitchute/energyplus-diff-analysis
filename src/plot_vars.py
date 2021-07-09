@@ -117,7 +117,7 @@ def plot(base_path: str,
             mod = mod.dropna()
             diff = base - mod
 
-            if not all([abs(x) > 0 for x in diff]) and plot_only_diffs:
+            if any([abs(x) > 0 for x in diff]) and plot_only_diffs:
                 print(f"Skipping: {c} - no diffs")
                 continue
             elif all(x == 0 for x in [base.shape[0], mod.shape[0], diff.shape[0]]):
@@ -167,4 +167,4 @@ def plot(base_path: str,
 
 
 if __name__ == "__main__":
-    plot(sys.argv[1], sys.argv[2])
+    plot(sys.argv[1], sys.argv[2], plot_only_diffs=True)
