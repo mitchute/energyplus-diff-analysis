@@ -1,5 +1,4 @@
 import os
-import sys
 from math import ceil
 from pathlib import Path
 from textwrap import wrap
@@ -162,9 +161,7 @@ def plot(base_path: str,
             fig_name = c.replace(" ", "_").replace("/", "-").replace(":", "_")
             fig_path = plot_dir_path / f"{fig_name}.png"
             plt.savefig(fig_path, bbox_inches="tight")
-        except:
+        except:  # noqa: E722
             print(f"Failed on: {c}")
 
-
-if __name__ == "__main__":
-    plot(sys.argv[1], sys.argv[2], plot_only_diffs=True)
+    print(f"\nFiles saved to: {str(plot_dir_path.resolve())}")

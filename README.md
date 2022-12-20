@@ -5,11 +5,11 @@ This is a very basic tool used for plotting and comparing csv data from two sepa
 ## Usage
 
 A version of the jupyter notebook is hosted
-at [mybinder.org](https://mybinder.org/v2/gh/mitchute/plot-eplusout-csv/main)
+at [mybinder.org](https://mybinder.org/v2/gh/mitchute/energyplus-diff-analysis/main)
 
 *How is this used?*
 
-1. Open the binder (https://mybinder.org/v2/gh/mitchute/plot-eplusout-csv/main). This may take a few minutes to build
+1. Open the binder (https://mybinder.org/v2/gh/mitchute/energyplus-diff-analysis/main). This may take a few minutes to build
    and load the container images running behind the scenes. Once completed, mybinder.org will launch the jupyter
    dashboard in your web browser. This looks like a file explorer.
 2. Launch the "Make_Plots.ipynb" jupyter notebook by clicking on it from the jupyter dashboard. This will launch a new
