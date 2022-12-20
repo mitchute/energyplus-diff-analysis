@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 
 from eda.plot_vars import plot
@@ -6,15 +8,30 @@ from eda.plot_vars import plot
 @click.command(name="energyplus-diff-analysis")
 @click.argument("baseline-csv", type=click.Path(exists=True))
 @click.argument("modified-csv", type=click.Path(exists=True))
+@click.argument("output-dir", type=click.Path(exists=True))
 @click.option(
-    "-o",
-    "--output-dir",
-    type=click.Path(),
+    "-p",
+    "--plot-all-series",
+    is_flag=True,
     required=False,
-    default=None,
-    help="Output directory path to save plots."
+    default=False,
+    help="Plot all series including series without diffs"
 )
-def cli(baseline_csv, modified_csv, output_dir):
-    click.echo(click.format_filename(baseline_csv))
-    click.echo(click.format_filename(modified_csv))
-    plot(base_path=baseline_csv, mod_path=modified_csv, plot_dir=output_dir, plot_only_diffs=False)
+@click.option(
+    "-a",
+    "--create-archive",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Create archive of plots afterwards"
+)
+def cli(baseline_csv, modified_csv, output_dir, plot_all_series, create_archive):
+    click.echo(f"Baseline CSV: {click.format_filename(baseline_csv)}")
+    click.echo(f"Modified CSV: {click.format_filename(modified_csv)}")
+    plot(
+        base_path=Path(baseline_csv).resolve(),
+        mod_path=Path(modified_csv).resolve(),
+        out_dir=Path(output_dir).resolve(),
+        plot_all_series=plot_all_series,
+        create_archive=create_archive
+    )
