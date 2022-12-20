@@ -7,12 +7,11 @@ from eda import VERSION
 readme_file = Path(__file__).parent.resolve() / 'README.md'
 readme_contents = readme_file.read_text()
 
-
 setup(
     name="energyplus-diff-analysis",
     version=VERSION,
     packages=['eda'],
-    description="A tool used for plotting and comparing csv data from two separate EnergyPlus output files.",
+    description="A tool used for plotting and comparing separate EnergyPlus output CSV files.",
     install_requires=['click', 'matplotlib', 'pandas'],
     long_description=readme_contents,
     long_description_content_type='text/markdown',
