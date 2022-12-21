@@ -27,10 +27,10 @@ def plot(base_path: Union[str, Path],
     """
     Plots csv diffs
 
-    :param base_path: string path to baseline file
-    :param mod_path: string path to modified file
-    :param out_dir: optional. string path to directory for plots to be saved
-    :param plot_all_series: optional, default False. plot all series including series without diffs
+    :param base_path: path to baseline file
+    :param mod_path: path to modified file
+    :param out_dir: path to directory for plots to be saved
+    :param plot_all_series: optional, default FALSE. plot all series including series without diffs
     :param create_archive: optional, default FALSE. create archive of plots afterwards
     :param cols: optional. string column name, or list of string column names to plot
     :param low_row_num: optional. lowest row number to be plotted, excluding header row

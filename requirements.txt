@@ -2,6 +2,10 @@ click
 matplotlib
 pandas
 
+# docs
+sphinx
+sphinx-rtd-theme
+
 # tests
 # coveralls is purposfully set at an older version to be compatible with coveralls.io
 coveralls==2.2.0
