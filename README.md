@@ -17,44 +17,52 @@ A version of the jupyter notebook is hosted at [mybinder.org](https://mybinder.o
 
 ## Examples
 
-### Example 1 - Plotting all columns
+### Example 1 - Plotting all columns with diffs
 
 As described, this plots all columns
 
-```plot(baseline_path, mod_path)```
+```plot(baseline_path, mod_path, output_path)```
 
 ### Example 2 - Plot only one series
 
 If you only want to plot a single column from the csv data, the column name can be passed explicitly to the ```cols``` field.
 
-```plot(baseline_path, mod_path, cols="Col Name 1")```
+```plot(baseline_path, mod_path, output_path, cols="Col Name 1")```
 
 ### Example 3 - Plot a selected set of columns from the csv data
 
 The ```cols``` field also accepts a list input for when you want to plot more than one column, but not all of them.
 
-```plot(baseline_path, mod_path, cols=["Col Name 1", "Col Name 2"])```
+```plot(baseline_path, mod_path, output_path, cols=["Col Name 1", "Col Name 2"])```
 
 ### Example 4 - Plot one series for a specified number of rows
 
 You may also specify the range of rows you want to plot.
 
-```plot(baseline_path, mod_path, cols="Col Name 1", low_row_num=10, high_row_num=20)```
+```plot(baseline_path, mod_path, output_path, cols="Col Name 1", low_row_num=10, high_row_num=20)```
 
-### Example 5 - Specify the output directory for the plots
+### Example 5 - Only plot files with diffs
 
-If you want to be cheeky, can also specify the output directory.
+To plot all files with including files without diffs, you can add the `plot_all_series` flag and set it to `True`.
 
-```plot(baseline_path, mod_path, plot_dir="/path/to/output_dir")```
+```plot(baseline_path, mod_path, output_path, plot_all_series=True)```
 
-### Example 6 - Only plot files with diffs
+### Example 6 - Zip plots
 
-To plot only the files with diffs, you can add the `plot_only_diffs` kwarg and set it to `True`.
+You can also zip your plots once plotting is complete for easier downloading.
 
-```plot(baseline_path, mod_path, plot_only_diffs=True)```
+```plot(baseline_path, mod_path, output_path, create_archive=True)```
 
-### Example 7 - Zip plots
+## Command Line Interface
 
-Once you're all done, you can zip your plots for easier downloading.
+There's also a command line interface.
 
-```make_archive(source="plots", destination="plots.zip")```
+```commandline
+$ eplus-diff --help
+Usage: eplus-diff [OPTIONS] BASELINE_CSV MODIFIED_CSV OUTPUT_DIR
+
+Options:
+  -p, --plot-all-series  Plot all series including series without diffs
+  -a, --create-archive   Create archive of plots afterwards
+  --help                 Show this message and exit.
+```
