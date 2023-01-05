@@ -1,5 +1,5 @@
+import datetime
 import os
-import sys
 from math import ceil
 from pathlib import Path
 from textwrap import wrap
@@ -8,28 +8,33 @@ from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from eda.compress import make_archive
+
 
 class GenericError(Exception):
     pass
 
 
-def plot(base_path: str,
-         mod_path: str,
+def plot(base_path: Union[str, Path],
+         mod_path: Union[str, Path],
+         out_dir: Union[str, Path] = None,
+         plot_all_series: bool = False,
+         create_archive: bool = False,
          cols: Union[str, list] = None,
          low_row_num: int = None,
          high_row_num: int = None,
-         plot_dir: str = None,
-         plot_only_diffs: bool = False):
+         ):
     """
     Plots csv diffs
 
-    :param base_path: string path to baseline file
-    :param mod_path: string path to modified file
+    :param base_path: path to baseline file
+    :param mod_path: path to modified file
+    :param out_dir: path to directory for plots to be saved
+    :param plot_all_series: optional, default FALSE. plot all series including series without diffs
+    :param create_archive: optional, default FALSE. create archive of plots afterwards
     :param cols: optional. string column name, or list of string column names to plot
     :param low_row_num: optional. lowest row number to be plotted, excluding header row
     :param high_row_num: optional. highest row number to be plotted, excluding header row
-    :param plot_dir: optional. string path to directory for plots to be saved
-    :param plot_only_diffs: optional, default FALSE. only plots columns with differences
     :return:
     """
 
@@ -54,7 +59,7 @@ def plot(base_path: str,
     base_cols = df_base.columns.tolist()
     mod_cols = df_mod.columns.tolist()
 
-    # get ride of the index col
+    # get rid of the index col
     if "Date/Time" in base_cols:
         base_cols.remove("Date/Time")
     if "Date/Time" in mod_cols:
@@ -95,10 +100,10 @@ def plot(base_path: str,
 
     # setup plots folder
     parent_dir = Path(__file__).parent.parent
-    if plot_dir is None:
+    if out_dir is None:
         plot_dir_path = parent_dir / "plots"
     else:
-        plot_dir_path = Path(plot_dir)
+        plot_dir_path = Path(out_dir) / f"plots-{datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
     # create the plots dir if it doesn't exist
     if not plot_dir_path.exists():
@@ -117,7 +122,7 @@ def plot(base_path: str,
             mod = mod.dropna()
             diff = base - mod
 
-            if not any([abs(x) > 0 for x in diff]) and plot_only_diffs:
+            if not any([abs(x) > 0 for x in diff]) and not plot_all_series:
                 print(f"Skipping: {c} - no diffs")
                 continue
             elif all(x == 0 for x in [base.shape[0], mod.shape[0], diff.shape[0]]):
@@ -140,6 +145,14 @@ def plot(base_path: str,
             if diff.shape[0] > 0:
                 ax2 = ax1.twinx()
                 lines.append(ax2.plot(diff, marker=".", linestyle="-.", c="r", markevery=marker_interval)[0])
+                # add a note for when we're not adding markers to all data points
+                if marker_interval > 1:
+                    ax2.annotate(f"Note: marker icons only shown every {marker_interval} points\n"
+                                 f"for clarity",
+                                 xy=(10, 10),
+                                 xycoords="figure pixels",
+                                 fontsize=8)
+                ax2.set_ylabel("Delta (baseline - modified)")
 
             # primary x/y axis grid lines
             ax1.grid()
@@ -148,23 +161,17 @@ def plot(base_path: str,
             line_labels = ["baseline", "modified", "delta"]
             fig.legend(lines, line_labels, loc="lower right", ncol=3)
 
-            # add a note for when we're not adding markers to all data points
-            if marker_interval > 1:
-                ax2.annotate(f"Note: marker icons only shown every {marker_interval} points\n"
-                             f"for clarity",
-                             xy=(10, 10),
-                             xycoords="figure pixels",
-                             fontsize=8)
-
             # final housekeeping
-            ax2.set_ylabel("Delta (baseline - modified)")
             plt.suptitle("\n".join(wrap(c)))
             fig_name = c.replace(" ", "_").replace("/", "-").replace(":", "_")
             fig_path = plot_dir_path / f"{fig_name}.png"
             plt.savefig(fig_path, bbox_inches="tight")
-        except:
+        except:  # noqa: E722
             print(f"Failed on: {c}")
 
-
-if __name__ == "__main__":
-    plot(sys.argv[1], sys.argv[2], plot_only_diffs=True)
+    if create_archive:
+        archive_path = str(plot_dir_path.parent.resolve() / f"{plot_dir_path.name}.zip")
+        make_archive(str(plot_dir_path), archive_path)
+        print(f"\nFiles saved to: {archive_path}")
+    else:
+        print(f"\nFiles saved to: {str(plot_dir_path.resolve())}")
