@@ -22,5 +22,5 @@ jobs:
         run: pip install click matplotlib pandas nose coverage
 
       - name: Run Tests
-        run: nosetests --with-coverage --cover-package scp  # --cover-html for local html results
+        run: nosetests --with-coverage --cover-package energyplus_diffs  # --cover-html for local html results
 

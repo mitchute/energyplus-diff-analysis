@@ -6,7 +6,7 @@ path.insert(0, str(root_dir))
 
 import datetime
 
-from eda import VERSION
+from energyplus_diffs import VERSION
 
 # Configuration file for the Sphinx documentation builder.
 #

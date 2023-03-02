@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from eda.plot_vars import plot
+from energyplus_diffs.plot_vars import plot
 
 
 @click.command(name="energyplus-diff-analysis")

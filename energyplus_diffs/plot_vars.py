@@ -8,7 +8,7 @@ from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from eda.compress import make_archive
+from energyplus_diffs.compress import make_archive
 
 
 class GenericError(Exception):

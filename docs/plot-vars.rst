@@ -1,7 +1,7 @@
 Plot Vars
 =========
 
-.. automodule:: eda.plot_vars
+.. automodule:: energyplus_diffs.plot_vars
     :members:
     :undoc-members:
     :show-inheritance:
