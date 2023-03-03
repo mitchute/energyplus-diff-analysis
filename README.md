@@ -57,7 +57,7 @@ You can also zip your plots once plotting is complete for easier downloading.
 
 There's also a command line interface.
 
-```commandline
+```bash
 $ energyplus_diffs --help
 Usage: eplus-diff [OPTIONS] BASELINE_CSV MODIFIED_CSV OUTPUT_DIR
 
