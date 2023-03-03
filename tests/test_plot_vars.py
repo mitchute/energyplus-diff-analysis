@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from eda.plot_vars import plot, GenericError
+from energyplus_diffs.plot_vars import plot, GenericError
 
 
 class TestPlotVars(unittest.TestCase):
