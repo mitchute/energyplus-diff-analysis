@@ -7,9 +7,6 @@ from energyplus_diffs import VERSION
 readme_file = Path(__file__).parent.resolve() / 'README.md'
 readme_contents = readme_file.read_text()
 
-license_file = Path(__file__).parent.resolve() / 'LICENSE'
-license_contents = license_file.read_text()
-
 setup(
     name="energyplus_diff_analysis",
     version=VERSION,
@@ -25,7 +22,7 @@ setup(
     author='Matt Mitchell',
     author_email='mitchute@gmail.com',
     url='https://github.com/mitchute/energyplus-diff-analysis',
-    license=license_contents,
+    license="MIT",
     entry_points={
         'console_scripts': ['energyplus_diffs=energyplus_diffs.cli:cli']
     }
