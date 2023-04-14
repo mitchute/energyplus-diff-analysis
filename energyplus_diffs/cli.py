@@ -1,4 +1,5 @@
 from pathlib import Path
+from sys import exit
 
 import click
 
@@ -25,7 +26,7 @@ from energyplus_diffs.plot_vars import plot
     default=False,
     help="Create archive of plots afterwards"
 )
-def cli(baseline_csv, modified_csv, output_dir, plot_all_series, create_archive):
+def cli(baseline_csv, modified_csv, output_dir, plot_all_series, create_archive) -> int:
     click.echo(f"Baseline CSV: {click.format_filename(baseline_csv)}")
     click.echo(f"Modified CSV: {click.format_filename(modified_csv)}")
     plot(
@@ -35,3 +36,8 @@ def cli(baseline_csv, modified_csv, output_dir, plot_all_series, create_archive)
         plot_all_series=plot_all_series,
         create_archive=create_archive
     )
+    return 0
+
+
+if __name__ == "__main__":
+    exit(cli())
